@@ -26,7 +26,7 @@
 
 Для работы с программой убедитесь, что у вас установлены все библиотеки.
 ```bash
-    pip install telebot, sql
+pip install telebot, sql
 ```
 ---
 
