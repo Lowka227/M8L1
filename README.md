@@ -36,7 +36,7 @@ pip install telebot, sql
     ```bash
     git clone путь_к_репозиторию
     ```
-2. Вставьте токен бота в файл `config.py`
+2. Вставьте токен бота в файл `config.py` и айди админов
 3. Запустите бота:
    ```bash
    python bot.py
