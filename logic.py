@@ -1,7 +1,10 @@
 import sqlite3
+from datetime import datetime
 from telebot import types
+from config import *
+
 def init_db():
-    conn = sqlite3.connect('support.db')
+    conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
     c.execute('''
         CREATE TABLE IF NOT EXISTS requests (
@@ -9,10 +12,19 @@ def init_db():
             user_id INTEGER,
             username TEXT,
             first_name TEXT,
-            message TEXT,
-            created_at TEXT
+            message TEXT
         )
     ''')
+    conn.commit()
+    conn.close()
+
+def save_request(user_id, username, first_name, message_text):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('''
+        INSERT INTO requests (user_id, username, first_name, message)
+        VALUES (?, ?, ?, ?)
+    ''', (user_id, username, first_name, message_text))
     conn.commit()
     conn.close()
 
@@ -36,15 +48,22 @@ faq = {
         "Информацию о доставке вы можете найти на странице оформления заказа на нашем сайте. Там указаны доступные способы доставки и сроки."
 }
 
-
 def main_keyboard():
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    markup.add("❓ Задать вопрос")
-    return markup
+    kb = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    kb.add(types.KeyboardButton("❓ Задать вопрос"))
+    kb.add(types.KeyboardButton("📩 Написать специалисту"))
+    return kb
+
+
+def back_keyboard():
+    kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    kb.add(types.KeyboardButton("← Назад в меню"))
+    return kb
+
 
 def faq_keyboard():
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-    for question in faq.keys():
-        markup.add(question)
-    markup.add("← Назад")
-    return markup
+    kb = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    for q in faq:
+        kb.add(types.KeyboardButton(q))
+    kb.add(types.KeyboardButton("← Назад в меню"))
+    return kb
