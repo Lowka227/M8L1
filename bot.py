@@ -107,7 +107,6 @@ def handle_text(message):
     notification = f"""
 Новое обращение:
 Имя: {first_name}
-Username: {username}
 Текст: {text}
 
 Чтобы ответить → нажмите «Ответить» на это сообщение и напишите текст
@@ -124,4 +123,3 @@ Username: {username}
 
 
 if __name__ == "__main__":
-    bot.infinity_polling()
